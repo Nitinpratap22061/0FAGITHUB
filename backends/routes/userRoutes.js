@@ -8,20 +8,11 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   console.log("🔹 [USER ROUTE] Received Request to /user");
 
-  // Log the incoming headers and query params
-  console.log("🔍 Headers Received:", req.headers);
-  console.log("🔍 Query Parameters:", req.query);
-
-  // Extract token from headers or query
   let token = req.headers.authorization || req.query.token;
 
-  if (token) {
-    if (token.startsWith("Bearer ")) {
-      token = token.split(" ")[1]; // Extract only the token part
-    }
+  if (token && token.startsWith("Bearer ")) {
+    token = token.split(" ")[1];
   }
-
-  console.log("🔹 [USER ROUTE] Token Extracted:", token);
 
   if (!token) {
     console.error("⚠️ [USER ROUTE] Unauthorized: Token missing");
@@ -29,11 +20,7 @@ router.get("/", async (req, res) => {
   }
 
   try {
-    // Verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("✅ [USER ROUTE] Decoded Token:", decoded);
-
-    // Find the user in the database
     const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {
@@ -41,14 +28,12 @@ router.get("/", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Return the user details
     res.json(user);
   } catch (error) {
     console.error("❌ [USER ROUTE] JWT Error:", error.message);
     res.status(401).json({ error: "Invalid or expired token" });
   }
 });
-
 // Update user profile (for intro form)
 router.put("/", async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
