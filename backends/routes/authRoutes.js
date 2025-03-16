@@ -8,7 +8,12 @@ router.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/" }),
   (req, res) => {
+    console.log("GitHub callback triggered");
     const { user, token, accessToken } = req.user;
+    console.log("User:", user);
+    console.log("Token:", token);
+    console.log("Access Token:", accessToken);
+
     if (user.isNewUser) {
       res.redirect(`${process.env.FRONTEND_URL}/intro?token=${token}&accessToken=${accessToken}`);
     } else {
