@@ -7,31 +7,27 @@ const IntroForm = ({ user }) => {
   const [source, setSource] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem("token");
 
-    try {
-      // Send the updated user data to the backend
-      const response = await axios.put(
-        "https://zerofagithub.onrender.com/user",
-        { linkedin, source, isNewUser: false }, // Set isNewUser to false
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Use backticks for template literals
-          },
-        }
-      );
+  try {
+    const response = await axios.put(
+      "https://zerofagithub.onrender.com/user",
+      { linkedin, source, isNewUser: false },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-      // Update the user data in localStorage
-      localStorage.setItem("user", JSON.stringify(response.data));
-
-      // Redirect to the dashboard after successful submission
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Error updating profile:", error);
-    }
-  };
+    localStorage.setItem("user", JSON.stringify(response.data));
+    navigate("/dashboard");
+  } catch (error) {
+    console.error("Error updating profile:", error);
+  }
+};
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
