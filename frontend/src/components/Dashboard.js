@@ -6,28 +6,28 @@ const Dashboard = ({ user }) => {
   const [accessLevel, setAccessLevel] = useState("public"); // Default to public repos
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+  const accessToken = localStorage.getItem("accessToken");
 
-    if (accessToken) {
-      fetchRepositories(accessToken, accessLevel);
-    }
-  }, [accessLevel]);
+  if (accessToken) {
+    fetchRepositories(accessToken, accessLevel);
+  }
+}, [accessLevel]);
 
-  const fetchRepositories = async (token, level) => {
-    try {
-      const response = await axios.get("https://api.github.com/user/repos", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          visibility: level, // Fetch public, private, or all repos
-        },
-      });
-      setRepos(response.data);
-    } catch (error) {
-      console.error("Error fetching repositories:", error);
-    }
-  };
+const fetchRepositories = async (token, level) => {
+  try {
+    const response = await axios.get("https://api.github.com/user/repos", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        visibility: level,
+      },
+    });
+    setRepos(response.data);
+  } catch (error) {
+    console.error("Error fetching repositories:", error);
+  }
+};
 
   const handleAccessLevelChange = (level) => {
     setAccessLevel(level);
