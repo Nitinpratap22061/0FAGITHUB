@@ -8,7 +8,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: "https://zerofagithub.onrender.com/auth/github/callback",
+      callbackURL:"https://zerofagithub.onrender.com/auth/github/callback",
       scope: ["user:email", "repo"], // Request access to user email and repositories
     },
     async (accessToken, refreshToken, profile, done) => {
